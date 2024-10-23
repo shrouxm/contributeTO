@@ -10,7 +10,7 @@ interface Image {
 interface Location {
   locationName: string;
   address: string;
-  displayAddress: string;
+  displayAddress?: string;
   locationType: Array<{ type: string }>;
   geoCoded: boolean;
   id: string;
@@ -63,7 +63,7 @@ interface CalendarEvent {
   orgPhone: string;
   freeEvent: string;
   startDateTime: string;
-  timeInfo: string;
+  timeInfo?: string;
   reservationsRequired: string;
   orgEmail: string;
   locations: Location[];

@@ -24,6 +24,11 @@ export function EventCard({ event }: { event: EventData }) {
     // image,
   } = event.calEvent;
 
+  let cta: string | undefined;
+  if (timeInfo) cta = timeInfo;
+  if (locations[0].displayAddress?.startsWith('<a'))
+    cta = locations[0].displayAddress;
+
   return (
     <div className="bg-white p-4 shadow-md min-w-0">
       {/* <img
@@ -32,8 +37,8 @@ export function EventCard({ event }: { event: EventData }) {
         className="w-full h-48 object-cover rounded-t-lg"
       /> */}
       <h2>{eventName}</h2>
-      <EngagementButtonParent content={timeInfo}></EngagementButtonParent>
-      <p className=" mt-2" dangerouslySetInnerHTML={{ __html: description }} />
+      {cta && <EngagementButtonParent content={cta} />}
+      <p className="mt-2" dangerouslySetInnerHTML={{ __html: description }} />
 
       <div className="mt-4">
         <h3 className="text-lg  font-semibold">Date & Time</h3>
@@ -43,20 +48,24 @@ export function EventCard({ event }: { event: EventData }) {
         </p>
       </div>
 
-      <div className="mt-4">
-        <h3 className="text-lg   font-semibold">Location</h3>
-        {locations.map((location, index) => (
-          <div key={index}>
-            <p>
-              <span className="font-semibold">{location.locationName}: </span>
-              <span
-                dangerouslySetInnerHTML={{ __html: location.displayAddress }}
-              />
-            </p>
-            <p></p>
-          </div>
-        ))}
-      </div>
+      {locations[0].locationName !== 'Online' && (
+        <div className="mt-4">
+          <h3 className="text-lg   font-semibold">Location</h3>
+          {locations.map(
+            (location, index) =>
+              location.locationName !== 'Online' && (
+                <div key={index}>
+                  <p>
+                    <span className="font-semibold">
+                      {location.locationName}:{' '}
+                    </span>
+                    <span>{location.displayAddress}</span>
+                  </p>
+                </div>
+              )
+          )}
+        </div>
+      )}
 
       <div className="mt-4">
         <h3 className="text-lg   font-semibold">Organizer</h3>
